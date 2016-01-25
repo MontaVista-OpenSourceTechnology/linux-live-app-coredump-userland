@@ -71,7 +71,8 @@ usage (void)
 int
 main (int argc, char *argv[])
 {
-  int opt, val, changed;
+  int opt, changed;
+  long val;
   struct livedump_param param = {0, 0, 0, 0};
   struct option pcoredump_options[] =
     {
