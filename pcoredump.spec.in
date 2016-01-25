@@ -1,0 +1,51 @@
+Summary   	: Live Application Dump userspace tool
+Name	  	: @PACKAGE@
+Version	  	: @VERSION@
+Release	  	: 1.%{_mvl_build_id}
+Source	  	: %{name}-%{version}.tar.bz2
+License 	: GPL 
+Group	  	: Development/Tools
+Buildroot 	: %{_tmppath}/%{name}-%{_mvl_target_arch}-root
+Prefix	  	: %{_mvl_cross_target_dir}
+
+%description
+This is a tool intended to initiate a core dumping of a running
+process. Since the whole process is performed by the kernel, your
+kernel must have Live Application Dump facility installed and enabled.
+
+%prep
+
+%target_check
+%setup -n %{name}-%{version}
+
+%build
+%target_setup
+%target_configure
+%make
+
+%install
+%target_setup
+rm -rf %{buildroot}
+install -d %{buildroot}%{_mvl_cross_target_dir}%{_mvl_target_bin_dir}
+install -d %{buildroot}%{_mvl_cross_target_dir}%{_mvl_target_man_dir}/man1
+install objdir/%{name} %{buildroot}%{_mvl_cross_target_dir}%{_mvl_target_bin_dir}
+install %{name}.1 %{buildroot}%{_mvl_cross_target_dir}%{_mvl_target_man_dir}/man1
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(-,root,root)
+%{_mvl_cross_target_dir}%{_mvl_target_bin_dir}/%{name}
+%{_mvl_cross_target_dir}%{_mvl_target_man_dir}/man1/%{name}.1
+
+%changelog
+* Fri Feb 26 2010 Andrei Konovalov <akonovalov@mvista.com>
+- Updated to 0.1.3, pcoredump_fix_ptrace_number.patch and
+  resource_include_fix.patch applied to the pcoredump.c in this tarball
+* Tue Sep 13 2007 Dmitry Antipov <antipov@ru.mvista.com>
+- Manual page !
+* Tue Sep 11 2007 Dmitry Antipov <antipov@ru.mvista.com>
+- Updated to 0.1.2, autoupdate .spec from .spec.in
+* Wed Sep 05 2007 Dmitry Antipov <antipov@ru.mvista.com>
+- Initial version for 0.1.1
