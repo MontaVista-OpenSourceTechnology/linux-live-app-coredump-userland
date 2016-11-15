@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <getopt.h>
+#include <stdbool.h>
 #include <error.h>
 #include <sys/resource.h>
 #include <sys/ptrace.h>
@@ -36,6 +37,7 @@ struct livedump_param {
   int sched_nice;
   int io_prio;
   int oom_adj;
+  bool core_limit_set;
   unsigned long core_limit;
 };
 #endif
@@ -97,12 +99,13 @@ main (int argc, char *argv[])
 	  else
 	    {
 	      val = parse_numeric (optarg);
-	      if (val < 1 || val > RLIM_INFINITY)
+	      if (val < 0 || val > RLIM_INFINITY)
 		error (1, 0, "invalid core file size limit %ld - must be [1:%ld]\n", 
 		       val, RLIM_INFINITY);
 	      param.core_limit = val;
 	    }
 	  changed++;
+	  param.core_limit_set = true;
 	}
       else if (opt == 'i')
 	{
