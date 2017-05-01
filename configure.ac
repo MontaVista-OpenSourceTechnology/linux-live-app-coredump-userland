@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(pcoredump, 0.1.3, source@mvista.com)
+AC_INIT(pcoredump, 0.2.0, source@mvista.com)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([.])
 AC_CONFIG_HEADERS([config.h])
